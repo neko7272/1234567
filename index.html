@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企鵝的個人小天地 🐧♡ | 社恐人類的個人主頁</title>
+  <meta name="description" content="你好！我是企鵝，一個喜歡打排球、打遊戲、出去玩的社恐人類。歡迎來到我的粉紅日系個人網站！">
+
+  <!-- Google Fonts: 圓體日系風格與繁體中文支援 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===================================================
+       1. 全域變數與日系粉色系主題 (Design Tokens)
+       =================================================== */
+    :root {
+      --primary-pink: #ff7597;
+      --primary-soft: #ffb7c5;
+      --primary-light: #fff0f4;
+      --primary-cream: #fff9fa;
+      --accent-yellow: #ffd166;
+      --accent-mint: #bbf2e8;
+      --accent-lavender: #e2dbfc;
+      --text-main: #4a3843;
+      --text-muted: #8c7884;
+      --border-pink: #ffd0dc;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-shadow: 0 12px 32px rgba(255, 117, 151, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 12px;
+      --font-family: 'Zen Maru Gothic', 'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--primary-cream);
+      /* 日系淡粉格子＋波點背景 */
+      background-image: 
+        radial-gradient(var(--border-pink) 1.2px, transparent 1.2px),
+        linear-gradient(to right, rgba(255, 183, 197, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 183, 197, 0.1) 1px, transparent 1px);
+      background-size: 24px 24px, 48px 48px, 48px 48px;
+      color: var(--text-main);
+      line-height: 1.75;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 浮動櫻花與裝飾背景泡泡 */
+    .bg-deco-circle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+      filter: blur(40px);
+    }
+    .deco-1 {
+      width: 380px;
+      height: 380px;
+      background: #ffd6e0;
+      top: -80px;
+      right: -80px;
+    }
+    .deco-2 {
+      width: 320px;
+      height: 320px;
+      background: #ffe5ec;
+      bottom: 10%;
+      left: -60px;
+    }
+
+    /* ===================================================
+       2. 容器與版面佈局 (Layout)
+       =================================================== */
+    .container {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 日系紙膠帶效果 (Washi Tape) */
+    .washi-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1deg);
+      background: rgba(255, 183, 197, 0.65);
+      border-left: 2px dashed rgba(255, 255, 255, 0.8);
+      border-right: 2px dashed rgba(255, 255, 255, 0.8);
+      height: 24px;
+      width: 120px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      z-index: 2;
+    }
+
+    /* 卡片通用樣式 (Kawaii Card) */
+    .cute-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      margin-bottom: 36px;
+      box-shadow: var(--card-shadow);
+      border: 2px solid var(--border-pink);
+      position: relative;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cute-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(255, 117, 151, 0.18);
+    }
+
+    /* ===================================================
+       3. 捲動進場淡入淡出動畫 (Scroll Animations)
+       =================================================== */
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.75s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: opacity, transform;
+    }
+
+    .fade-in-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===================================================
+       4. 頂部主視覺 Hero 區域
+       =================================================== */
+    .hero-section {
+      text-align: center;
+      padding: 40px 20px 20px;
+      position: relative;
+    }
+
+    /* 日系橫條標語 */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffe3ec;
+      color: var(--primary-pink);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 50px;
+      border: 1.5px dashed var(--primary-pink);
+      margin-bottom: 24px;
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* 企鵝頭像容器與互動 */
+    .avatar-wrapper {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      margin: 0 auto 24px;
+      cursor: pointer;
+    }
+
+    .avatar-halo {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd3e0, #fff0f5, #ffe4e9);
+      animation: spinHalo 10s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes spinHalo {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .avatar-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 4px solid var(--primary-soft);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      box-shadow: 0 8px 24px rgba(255, 117, 151, 0.25);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .avatar-wrapper:hover .avatar-box {
+      transform: scale(1.06) rotate(3deg);
+    }
+
+    .avatar-wrapper:active .avatar-box {
+      transform: scale(0.95);
+    }
+
+    /* 企鵝 SVG 繪製 */
+    .penguin-svg {
+      width: 130px;
+      height: 130px;
+      transition: transform 0.3s ease;
+    }
+
+    .avatar-tip {
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-main);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+      z-index: 3;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      pointer-events: none;
+    }
+
+    /* 名字與標題 */
+    .hero-name {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-name span.jp {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-pink);
+      letter-spacing: 3px;
+      margin-bottom: 2px;
+    }
+
+    .hero-name::after {
+      content: '♡';
+      position: absolute;
+      top: -5px;
+      right: -24px;
+      color: var(--primary-pink);
+      font-size: 1.4rem;
+      animation: beatHeart 1.4s infinite ease-in-out;
+    }
+
+    @keyframes beatHeart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-pink);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .hero-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border-pink);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      box-shadow: 0 4px 12px rgba(255, 117, 151, 0.08);
+      margin-bottom: 30px;
+    }
+
+    .battery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff527b;
+      display: inline-block;
+      box-shadow: 0 0 8px #ff527b;
+      animation: pulseDot 1.8s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* 快捷導覽按鈕 */
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 35px;
+    }
+
+    .nav-btn {
+      text-decoration: none;
+      color: var(--text-main);
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1.5px solid var(--border-pink);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn:hover {
+      background: var(--primary-pink);
+      color: #ffffff;
+      border-color: var(--primary-pink);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 117, 151, 0.25);
+    }
+
+    /* ===================================================
+       5. 區塊通用標題 (Section Headers)
+       =================================================== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .section-title .title-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #ffe6ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 10px rgba(255, 117, 151, 0.15);
+    }
+
+    .section-title .sub {
+      font-size: 0.8rem;
+      color: var(--primary-pink);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: -4px;
+    }
+
+    /* ===================================================
+       6. 關於我：社恐檔案 (About Section)
+       =================================================== */
+    .about-intro-text {
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+      background: #fff6f8;
+      padding: 18px 22px;
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--primary-pink);
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .profile-item {
+      background: #ffffff;
+      border: 1.5px solid var(--border-pink);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: transform 0.2s;
+    }
+
+    .profile-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary-pink);
+    }
+
+    .profile-item .icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .profile-item .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      display: block;
+    }
+
+    .profile-item .val {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* ===================================================
+       7. 興趣區塊 (Hobbies Grid)
+       =================================================== */
+    .hobbies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .hobby-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-pink);
+      padding: 24px 20px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hobby-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #ff9ebb, #ff6b8b);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .hobby-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 14px 28px rgba(255, 117, 151, 0.16);
+      border-color: var(--primary-pink);
+    }
+
+    .hobby-card:hover::before {
+      opacity: 1;
+    }
+
+    .hobby-icon-wrap {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      transition: transform 0.4s ease;
+      box-shadow: 0 4px 14px rgba(255, 117, 151, 0.15);
+    }
+
+    .hobby-card:hover .hobby-icon-wrap {
+      transform: scale(1.15) rotate(8deg);
+    }
+
+    .hobby-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .hobby-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #fff0f5;
+      color: var(--primary-pink);
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-pink);
+    }
+
+    .hobby-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ===================================================
+       8. 技能與目標區塊 (Skills & Goal: 賺錢)
+       =================================================== */
+    .skills-container {
+      background: linear-gradient(135deg, #fff9fb, #fff0f5);
+      border-radius: var(--radius-md);
+      padding: 26px 24px;
+      border: 2px dashed var(--border-pink);
+    }
+
+    .gold-headline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .skill-badge-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #995b00;
+      border: 2px solid #ffe399;
+      box-shadow: 0 4px 12px rgba(255, 209, 102, 0.25);
+    }
+
+    .money-interactive-box {
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      border: 1.5px solid var(--border-pink);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .coin-piggy-btn {
+      background: linear-gradient(135deg, #ffd166, #ffbe3b);
+      color: #5c3b00;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(255, 190, 59, 0.35);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .coin-piggy-btn:hover {
+      transform: scale(1.06) translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255, 190, 59, 0.45);
+    }
+
+    .coin-piggy-btn:active {
+      transform: scale(0.95);
+    }
+
+    .coin-counter {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .coin-counter strong {
+      color: #e67e22;
+      font-size: 1.2rem;
+    }
+
+    /* 財富自由路線進度條 */
+    .roadmap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .roadmap-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #ffffff;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-pink);
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-pink);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ===================================================
+       9. 經歷活動區塊 (Timeline: 程式營隊)
+       =================================================== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 8px;
+      width: 3px;
+      background: linear-gradient(180deg, var(--primary-pink), var(--primary-soft));
+      border-radius: 3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      top: 6px;
+      left: -28px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 4px solid var(--primary-pink);
+      box-shadow: 0 0 0 3px rgba(255, 117, 151, 0.2);
+    }
+
+    .timeline-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border-pink);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      transition: all 0.25s ease;
+    }
+
+    .timeline-card:hover {
+      border-color: var(--primary-pink);
+      transform: translateX(4px);
+      box-shadow: 0 8px 20px rgba(255, 117, 151, 0.12);
+    }
+
+    .timeline-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #fff;
+      background: var(--primary-pink);
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .timeline-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .timeline-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .tags-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag-item {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary-pink);
+      background: #fff0f5;
+      padding: 4px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-pink);
+    }
+
+    /* ===================================================
+       10. 互動留言 / 打氣互動區 (Interactive Cheer)
+       =================================================== */
+    .cheer-box {
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    .cheer-btn {
+      background: linear-gradient(135deg, #ff7597, #ff537e);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 22px rgba(255, 83, 126, 0.35);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cheer-btn:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 12px 28px rgba(255, 83, 126, 0.45);
+    }
+
+    .cheer-btn:active {
+      transform: scale(0.96);
+    }
+
+    .cheer-status {
+      margin-top: 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--primary-pink);
+      min-height: 24px;
+    }
+
+    /* ===================================================
+       11. 飄落愛心與金幣粒子 (Falling Particles)
+       =================================================== */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 24px;
+      animation: floatUpAndFade 1.4s ease-out forwards;
+      user-select: none;
+    }
+
+    @keyframes floatUpAndFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+      }
+      50% {
+        transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% - 70px)) scale(1.2) rotate(15deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% - 130px)) scale(0.8) rotate(30deg);
+      }
+    }
+
+    /* ===================================================
+       12. 頁尾 (Footer)
+       =================================================== */
+    footer {
+      text-align: center;
+      padding: 30px 20px 20px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      position: relative;
+    }
+
+    footer p {
+      margin-bottom: 6px;
+    }
+
+    .footer-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      background: #ffffff;
+      border: 1px solid var(--border-pink);
+      padding: 3px 12px;
+      border-radius: 20px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* 回頂部按鈕 (Cute Back to Top) */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--primary-pink);
+      color: var(--primary-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      text-decoration: none;
+      box-shadow: 0 6px 18px rgba(255, 117, 151, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 100;
+      cursor: pointer;
+    }
+
+    .back-to-top.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-pink);
+      color: #ffffff;
+      transform: translateY(-4px) scale(1.08);
+    }
+
+    /* ===================================================
+       13. 響應式微調 (Responsive Tweaks)
+       =================================================== */
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px 14px 60px;
+      }
+      .cute-card {
+        padding: 26px 18px;
+        border-radius: var(--radius-md);
+        margin-bottom: 24px;
+      }
+      .hero-name {
+        font-size: 2.2rem;
+      }
+      .avatar-wrapper {
+        width: 140px;
+        height: 140px;
+      }
+      .penguin-svg {
+        width: 105px;
+        height: 105px;
+      }
+      .section-title {
+        font-size: 1.25rem;
+      }
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+      .hobbies-grid {
+        grid-template-columns: 1fr;
+      }
+      .quick-nav {
+        gap: 6px;
+      }
+      .nav-btn {
+        padding: 6px 14px;
+        font-size: 0.82rem;
+      }
+      .back-to-top {
+        bottom: 16px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 裝飾背景柔光球 -->
+  <div class="bg-deco-circle deco-1"></div>
+  <div class="bg-deco-circle deco-2"></div>
+
+  <!-- 主內容容器 -->
+  <main class="container">
+
+    <!-- ==================== HERO 區域 ==================== -->
+    <header class="hero-section fade-in-section">
+      <div class="hero-badge">
+        <span>✨ 初めまして！歡迎來到我的小小避風港</span>
+      </div>
+
+      <!-- 互動式可愛企鵝頭像 -->
+      <div class="avatar-wrapper" id="avatarWrapper" title="點點我，給我一點溫暖 ♡">
+        <div class="avatar-halo"></div>
+        <div class="avatar-box">
+          <!-- 可愛日系企鵝 SVG -->
+          <svg class="penguin-svg" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 企鵝外輪廓黑身軀 -->
+            <path d="M80 18C52 18 36 44 36 86C36 122 50 138 80 138C110 138 124 122 124 86C124 44 108 18 80 18Z" fill="#3D3A45"/>
+            <!-- 企鵝白肚肚 -->
+            <path d="M80 48C62 48 50 68 50 96C50 120 62 134 80 134C98 134 110 120 110 96C110 68 98 48 80 48Z" fill="#FFFFFF"/>
+            <!-- 企鵝可愛小腳丫 -->
+            <ellipse cx="64" cy="138" rx="14" ry="7" fill="#FFB703"/>
+            <ellipse cx="96" cy="138" rx="14" ry="7" fill="#FFB703"/>
+            <!-- 企鵝小圓眼睛 -->
+            <circle cx="68" cy="72" r="5" fill="#2B2830"/>
+            <circle cx="92" cy="72" r="5" fill="#2B2830"/>
+            <circle cx="70" cy="70" r="1.8" fill="#FFFFFF"/>
+            <circle cx="94" cy="70" r="1.8" fill="#FFFFFF"/>
+            <!-- 企鵝腮紅 (粉色) -->
+            <ellipse cx="58" cy="80" rx="7" ry="4.5" fill="#FF9EBB" opacity="0.85"/>
+            <ellipse cx="102" cy="80" rx="7" ry="4.5" fill="#FF9EBB" opacity="0.85"/>
+            <!-- 企鵝橘色小嘴嘴 -->
+            <path d="M74 76C74 76 80 84 86 76Z" fill="#FF9E00"/>
+            <!-- 頭頂可愛小粉紅愛心 -->
+            <path d="M80 12C78 9 74 9 72 12C70 15 80 22 80 22C80 22 90 15 88 12C86 9 82 9 80 12Z" fill="#FF7597"/>
+          </svg>
+        </div>
+        <div class="avatar-tip">點我摸摸頭 ♡</div>
+      </div>
+
+      <!-- 名字與標題 -->
+      <h1 class="hero-name">
+        <span class="jp">ペンギン • PENGUIN</span>
+        企鵝
+      </h1>
+      <p class="hero-subtitle">
+        <span>🌱 社恐的人類</span>
+      </p>
+
+      <!-- 狀態小標籤 -->
+      <div class="hero-status-pill">
+        <span class="battery-dot"></span>
+        <span>當前社交電量：<strong>18%</strong>（正在角落安靜充電中...）</span>
+      </div>
+
+      <!-- 快速導覽列 -->
+      <nav class="quick-nav" aria-label="頁面快速跳轉">
+        <a href="#about" class="nav-btn"><span>📖</span> 關於企鵝</a>
+        <a href="#hobbies" class="nav-btn"><span>🏐</span> 我的愛好</a>
+        <a href="#skills" class="nav-btn"><span>💰</span> 技能與願望</a>
+        <a href="#experience" class="nav-btn"><span>💻</span> 營隊經歷</a>
+        <a href="#cheer" class="nav-btn"><span>💌</span> 給我打氣</a>
+      </nav>
+    </header>
+
+    <!-- ==================== 1. 關於我 ==================== -->
+    <section id="about" class="cute-card fade-in-section">
+      <div class="washi-tape"></div>
+      
+      <div class="section-title">
+        <div class="title-icon">🎀</div>
+        <div>
+          <span class="sub">PROFILE</span>
+          <h2>社恐企鵝的基本檔案</h2>
+        </div>
+      </div>
+
+      <p class="about-intro-text">
+        嗨！我是企鵝。雖然外表看起來是個正常人類，但其實內建超小容量的「社交電池」。平常喜歡待在自己的舒適圈裡安安靜靜，但只要聊到感興趣的事物，內心的小宇宙也是很澎湃的！請溫柔對待這隻怕生的企鵝喔 ♡
+      </p>
+
+      <div class="profile-grid">
+        <div class="profile-item">
+          <span class="icon">🏷️</span>
+          <div>
+            <span class="label">稱呼</span>
+            <span class="val">企鵝 (Penguin)</span>
+          </div>
+        </div>
+
+        <div class="profile-item">
+          <span class="icon">🏠</span>
+          <div>
+            <span class="label">出沒地</span>
+            <span class="val">房間的溫暖角落 / 球場邊緣</span>
+          </div>
+        </div>
+
+        <div class="profile-item">
+          <span class="icon">🔋</span>
+          <div>
+            <span class="label">屬性特徵</span>
+            <span class="val">社恐的人類、文字聊天迅速</span>
+          </div>
+        </div>
+
+        <div class="profile-item">
+          <span class="icon">🌸</span>
+          <div>
+            <span class="label">喜歡的事</span>
+            <span class="val">日系可愛風、粉紅色事物</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. 興趣愛好 ==================== -->
+    <section id="hobbies" class="cute-card fade-in-section">
+      <div class="washi-tape"></div>
+
+      <div class="section-title">
+        <div class="title-icon">🎈</div>
+        <div>
+          <span class="sub">MY HOBBIES</span>
+          <h2>我的三大能量補給</h2>
+        </div>
+      </div>
+
+      <div class="hobbies-grid">
+        <!-- 興趣 1 -->
+        <article class="hobby-card">
+          <div class="hobby-icon-wrap">🏐</div>
+          <h3 class="hobby-title">打排球</h3>
+          <span class="hobby-tag">#熱血充能 #球不落地</span>
+          <p class="hobby-desc">
+            平常安靜社恐，但站上球場就認真起來！專注在每一顆傳球與接球之中，享受和隊友默契配合的熱血感動。
+          </p>
+        </article>
+
+        <!-- 興趣 2 -->
+        <article class="hobby-card">
+          <div class="hobby-icon-wrap">🎮</div>
+          <h3 class="hobby-title">玩遊戲</h3>
+          <span class="hobby-tag">#二次元 #完全不用社交</span>
+          <p class="hobby-desc">
+            最棒的避難所！沈浸在虛擬世界的冒險與過關樂趣中，不必費心交際，戴上耳機就是自己的全世界。
+          </p>
+        </article>
+
+        <!-- 興趣 3 -->
+        <article class="hobby-card">
+          <div class="hobby-icon-wrap">🎒</div>
+          <h3 class="hobby-title">出去玩</h3>
+          <span class="hobby-tag">#大自然 #走走看看</span>
+          <p class="hobby-desc">
+            偶爾也需要出門行光合作用！喜歡去安靜舒適的景點走走、吃吃美食，拍拍漂亮的風景照回來回味。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 技能與目標：賺錢 ==================== -->
+    <section id="skills" class="cute-card fade-in-section">
+      <div class="washi-tape"></div>
+
+      <div class="section-title">
+        <div class="title-icon">💰</div>
+        <div>
+          <span class="sub">SKILLS & GOALS</span>
+          <h2>擅長或想學的技能</h2>
+        </div>
+      </div>
+
+      <div class="skills-container">
+        <div class="gold-headline">
+          <div class="skill-badge-lg">
+            <span>✨</span>
+            <span>終極大目標：學會「賺錢」！</span>
+          </div>
+          <span style="font-size: 0.85rem; color: #a17000; font-weight: 700;">
+            「社恐的最高境界，就是在家提早財富自由」
+          </span>
+        </div>
+
+        <!-- 趣味互動存錢罐 -->
+        <div class="money-interactive-box">
+          <p style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 12px; font-weight: 700;">
+            點擊下方金幣按鈕，一起為企鵝累積財富自由基金 💸
+          </p>
+          <button type="button" class="coin-piggy-btn" id="coinBtn">
+            <span>🪙 投入一枚金幣</span>
+          </button>
+          <div class="coin-counter">
+            目前已累積：<strong id="coinCount">0</strong> 枚發財金幣 💰
+          </div>
+        </div>
+
+        <!-- 學習計畫路線圖 -->
+        <div class="roadmap-list">
+          <div class="roadmap-step">
+            <span class="step-number">1</span>
+            <div class="step-content">
+              <div class="step-title">打好技術基本功 💻</div>
+              <div class="step-desc">從程式營隊出發，熟悉網頁與邏輯，把想法動手做成專案！</div>
+            </div>
+          </div>
+
+          <div class="roadmap-step">
+            <span class="step-number">2</span>
+            <div class="step-content">
+              <div class="step-title">探索多元生財之道 📈</div>
+              <div class="step-desc">研究接案、數位資產、投資理財知識，讓被動收入慢慢長大。</div>
+            </div>
+          </div>
+
+          <div class="roadmap-step">
+            <span class="step-number">3</span>
+            <div class="step-content">
+              <div class="step-title">實現躺平財富自由 🏖️</div>
+              <div class="step-desc">不用再勉強自己應酬社交，可以在家自由自在地打排球和玩遊戲！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. 經歷活動：程式營隊 ==================== -->
+    <section id="experience" class="cute-card fade-in-section">
+      <div class="washi-tape"></div>
+
+      <div class="section-title">
+        <div class="title-icon">🚀</div>
+        <div>
+          <span class="sub">EXPERIENCE</span>
+          <h2>做過的作品與參加活動</h2>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div class="timeline-card">
+            <span class="timeline-badge">熱血回憶</span>
+            <h3 class="timeline-title">🔥 參加「程式營隊」的奇幻冒險</h3>
+            <p class="timeline-text">
+              作為一個社恐人類，跨出第一步報名營隊真的需要很大的勇氣！在營隊裡跟著大家一起從零開始敲鍵盤、除錯、構思專案。當第一行程式碼成功跑出結果、畫面動起來的時候，心裡滿滿都是成就感！這也是我踏入數位世界、累積「賺錢技能」的重要起點。
+            </p>
+            <div class="tags-cloud">
+              <span class="tag-item">💻 程式啟蒙</span>
+              <span class="tag-item">🧩 邏輯思維</span>
+              <span class="tag-item">🤝 團隊合作（微社恐挑戰）</span>
+              <span class="tag-item">✨ 專案實作</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. 給企鵝加個油 (互動區) ==================== -->
+    <section id="cheer" class="cute-card fade-in-section">
+      <div class="washi-tape"></div>
+
+      <div class="section-title">
+        <div class="title-icon">💌</div>
+        <div>
+          <span class="sub">SAY HELLO</span>
+          <h2>給社恐企鵝一點能量</h2>
+        </div>
+      </div>
+
+      <div class="cheer-box">
+        <p style="margin-bottom: 20px; font-size: 1rem; color: var(--text-muted);">
+          雖然不擅長面對面講話，但每一顆遠端送來的愛心都能讓企鵝感到很溫暖 ♡
+        </p>
+        <button type="button" class="cheer-btn" id="cheerBtn">
+          <span>💖 拍拍企鵝的頭（送出愛心）</span>
+        </button>
+        <div class="cheer-status" id="cheerStatus"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 頁尾 FOOTER ==================== -->
+    <footer>
+      <p>企鵝的粉紅小天地 • 社恐人類的奮鬥日常 🐧</p>
+      <p style="font-size: 0.8rem;">Designed with love & pastel pink • Pure HTML & CSS</p>
+      <span class="footer-badge">© 2026 PENGUIN. All rights reserved.</span>
+    </footer>
+
+  </main>
+
+  <!-- 浮動回頂部按鈕 -->
+  <button type="button" class="back-to-top" id="backToTop" aria-label="回到最頂端" title="回到頂部">
+    ↑
+  </button>
+
+  <!-- ===================================================
+       JavaScript 互動與淡入動畫邏輯 (純原生 JS)
+       =================================================== -->
+  <script>
+    // 1. 捲動時觸發淡入動畫 (Intersection Observer)
+    document.addEventListener('DOMContentLoaded', () => {
+      const fadeSections = document.querySelectorAll('.fade-in-section');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.15
+      };
+
+      const observer = new IntersectionObserver((entries, observerInstance) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      }, observerOptions);
+
+      fadeSections.forEach(sec => observer.observe(sec));
+
+      // 2. 回到頂部按鈕顯示與隱藏
+      const backToTopBtn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopBtn.classList.add('active');
+        } else {
+          backToTopBtn.classList.remove('active');
+        }
+      });
+
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // 3. 粒子發射器共用函式 (發射愛心、金幣、櫻花)
+      function spawnParticle(x, y, symbol) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.textContent = symbol;
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        // 隨機左右飄移
+        const randomDx = (Math.random() - 0.5) * 80;
+        p.style.setProperty('--dx', `${randomDx}px`);
+        document.body.appendChild(p);
+
+        setTimeout(() => {
+          p.remove();
+        }, 1400);
+      }
+
+      // 4. 點擊企鵝頭像互動
+      const avatar = document.getElementById('avatarWrapper');
+      const penguinEmoji = ['💖', '✨', '🌸', '🐧', '🍰'];
+      avatar.addEventListener('click', (e) => {
+        const rect = avatar.getBoundingClientRect();
+        for (let i = 0; i < 4; i++) {
+          setTimeout(() => {
+            const rx = rect.left + rect.width / 2 + (Math.random() - 0.5) * 60;
+            const ry = rect.top + rect.height / 2 + (Math.random() - 0.5) * 40;
+            const emo = penguinEmoji[Math.floor(Math.random() * penguinEmoji.length)];
+            spawnParticle(rx, ry, emo);
+          }, i * 100);
+        }
+      });
+
+      // 5. 賺錢金幣按鈕互動
+      const coinBtn = document.getElementById('coinBtn');
+      const coinCountEl = document.getElementById('coinCount');
+      let currentCoins = 0;
+
+      coinBtn.addEventListener('click', (e) => {
+        currentCoins += 1;
+        coinCountEl.textContent = currentCoins.toLocaleString();
+        
+        // 發射金幣粒子
+        const rect = coinBtn.getBoundingClientRect();
+        const coinsIcons = ['🪙', '💰', '✨', '💵'];
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const rx = rect.left + rect.width / 2 + (Math.random() - 0.5) * 50;
+            const ry = rect.top + rect.height / 2;
+            const emo = coinsIcons[Math.floor(Math.random() * coinsIcons.length)];
+            spawnParticle(rx, ry, emo);
+          }, i * 90);
+        }
+      });
+
+      // 6. 給企鵝打氣按鈕互動
+      const cheerBtn = document.getElementById('cheerBtn');
+      const cheerStatus = document.getElementById('cheerStatus');
+      const cheerMessages = [
+        "企鵝收到了你的溫暖！社交電量 +10% 🔋",
+        "企鵝開心地在雪地裡滑行了一下 🐧✨",
+        "謝謝你！社恐企鵝覺得被治癒了 ♡",
+        "叮咚！企鵝的發財基金與勇氣增加了 🌸",
+        "收到愛心！企鵝臉紅紅地說了聲ありがと～"
+      ];
+      let cheerClickIndex = 0;
+
+      cheerBtn.addEventListener('click', (e) => {
+        const rect = cheerBtn.getBoundingClientRect();
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const rx = rect.left + rect.width / 2 + (Math.random() - 0.5) * 80;
+            const ry = rect.top + rect.height / 2;
+            spawnParticle(rx, ry, ['💖', '💕', '✨', '🌸'][Math.floor(Math.random() * 4)]);
+          }, i * 80);
+        }
+
+        cheerStatus.textContent = cheerMessages[cheerClickIndex % cheerMessages.length];
+        cheerClickIndex++;
+      });
+    });
+  </script>
+</body>
+</html>
